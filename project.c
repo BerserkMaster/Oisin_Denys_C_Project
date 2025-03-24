@@ -1,15 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>      //for random generation
+#include <string.h>
 
 void check_data();  //check the ranking list
-void save_data();  //save data to a ranking list
+void save_data(char name[], int score);  //save data to a ranking list
 int randomNumGeneration();
 int interWithUserO(int* );  // O turn
-int interWithUserX(int* );  // X turn
+int interWithUserX(int* );  // X turn:
+
+struct Name{
+  char name[15];
+  int score;  
+};
 
 int main() {
-    char name;
+    struct Name userData[3];
     int score = 0;
     int userInput = 0;
     int counter = 0;
@@ -22,9 +28,17 @@ int main() {
     switch (userInput) {
       case 1: 
       printf("Enter your name: ");
-      scanf("%c", &name);
+      scanf("%s", &userData[1].name);
+      userData[1].score = 10;
+      save_data(userData[1].name, userData[1].score);
       break;
       case 2:
+      printf("Player 1 enter your name: ");
+      scanf("%s", &userData[1].name);
+      userData[1].score = 10;
+      printf("Player 2 enter your name: ");
+      scanf("%s", &userData[1].name);
+      save_data(userData[1].name, userData[1].score);
       case 3:
       check_data();
       break;
@@ -72,6 +86,35 @@ void check_data() {
   }
 }
 
-void save_data() {
-  FILE* file = fopen("game_data.txt", "w");
+void save_data(char name[], int score) {
+
+  FILE* file = fopen("game_data.txt", "r+");
+  if (file == NULL) {
+    perror("File opening failed");
+    return;
+  }
+
+  char line[25];
+  int pos = 0;
+  int found = 0;
+  FILE *tempFile = fopen("temp_game_data.txt", "w");
+
+  while (fgets(line, sizeof(line), file)) {
+    pos = ftell(file);
+    if (strstr(line, name) != NULL) {
+      fseek(file, pos - strlen(line), SEEK_SET);
+      fprintf(file, "%s - %d\n", name, score);
+      fflush(file);  // flush buffer to ensure that data is written
+      found = 1;
+      break;
+    }
+      }
+  if (!found) {
+    fseek(file, 0, SEEK_END);
+    fprintf(file, "%s - %d\n", name, score);
+    fflush(file);
+  }
+
+
+ fclose(file);
 }
