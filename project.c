@@ -29,16 +29,18 @@ int main() {
       case 1: 
       printf("Enter your name: ");
       scanf("%s", &userData[1].name);
-      userData[1].score = 10;
+      userData[1].score = 4;
       save_data(userData[1].name, userData[1].score);
       break;
       case 2:
       printf("Player 1 enter your name: ");
-      scanf("%s", &userData[1].name);
-      userData[1].score = 10;
+      scanf("%s", &userData[2].name);
+      userData[2].score = 3;
+      save_data(userData[2].name, userData[2].score);
       printf("Player 2 enter your name: ");
-      scanf("%s", &userData[1].name);
-      save_data(userData[1].name, userData[1].score);
+      userData[3].score = 3;
+      scanf("%s", &userData[3].name);
+      save_data(userData[3].name, userData[3].score);
       case 3:
       check_data();
       break;
@@ -87,34 +89,45 @@ void check_data() {
 }
 
 void save_data(char name[], int score) {
-
-  FILE* file = fopen("game_data.txt", "r+");
-  if (file == NULL) {
-    perror("File opening failed");
-    return;
-  }
-
-  char line[25];
-  int pos = 0;
-  int found = 0;
-  FILE *tempFile = fopen("temp_game_data.txt", "w");
-
-  while (fgets(line, sizeof(line), file)) {
-    pos = ftell(file);
-    if (strstr(line, name) != NULL) {
-      fseek(file, pos - strlen(line), SEEK_SET);
-      fprintf(file, "%s - %d\n", name, score);
-      fflush(file);  // flush buffer to ensure that data is written
-      found = 1;
-      break;
+    FILE* file = fopen("game_data.txt", "r");
+    if (file == NULL) {
+        perror("File opening failed");
+        return;
     }
+
+    FILE* tempFile = fopen("temp_game_data.txt", "w");
+    if (tempFile == NULL) {
+        perror("Temporary file opening failed");
+        fclose(file);
+        return;
+    }
+
+    char line[15];  
+    int found = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+      char exstracted_name[15];
+      int exstracted_score = 0;
+      if (sscanf(line, "%s - %d", exstracted_name, &exstracted_score) == 2) {
+        if (strcmp(exstracted_name, name) == 0) {
+          exstracted_score += score;
+          fprintf(tempFile, "%s - %d\n", exstracted_name, exstracted_score);
+          found = 1;
+        } else {
+          fputs(line, tempFile);
+        }
+      } else {
+        fputs(line, tempFile);
       }
-  if (!found) {
-    fseek(file, 0, SEEK_END);
-    fprintf(file, "%s - %d\n", name, score);
-    fflush(file);
+    }
+
+    if (!found) {
+        fprintf(tempFile, "%s - %d\n", name, score);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    remove("game_data.txt");
+    rename("temp_game_data.txt", "game_data.txt");
   }
-
-
- fclose(file);
-}

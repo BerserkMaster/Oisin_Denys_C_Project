@@ -1,5 +1,9 @@
-Name - 10
-Denys - 10
-her - 10
-ame - 10
-Cher - 10
+Cher - 9
+Denys - 4
+Cher - 9
+Came - 1
+Devid - 1
+Cher - 9
+
+Deivd - 1
+Bold - 1
