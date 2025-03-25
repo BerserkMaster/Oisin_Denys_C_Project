@@ -26,31 +26,25 @@ void save_data(char name[], int score) {
         return;
     }
 
-    char line[100];  // Increased buffer size to handle longer lines
+    char line[100];  
     int found = 0;
 
     while (fgets(line, sizeof(line), file)) {
-        // Check if the line contains the name
         if (strstr(line, name) != NULL) {
-            // Write the updated name and score instead of the old line
             fprintf(tempFile, "%s - %d\n", name, score);
             found = 1;
         } else {
-            // Write the line unchanged
             fputs(line, tempFile);
         }
     }
 
-    // If name was not found, append new entry
     if (!found) {
         fprintf(tempFile, "%s - %d\n", name, score);
     }
 
-    // Close files
     fclose(file);
     fclose(tempFile);
 
-    // Replace old file with new file
     remove("game_data.txt");
     rename("temp_game_data.txt", "game_data.txt");
 }
