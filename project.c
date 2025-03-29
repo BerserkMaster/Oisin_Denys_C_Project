@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h> //for random generation
 #include <string.h>
-#include <stdbool.h>
 #define SIZE 3
 
 char board[SIZE][SIZE];
@@ -31,7 +30,6 @@ int main()
 {
   int winner = 0;
   struct Name userData[3];
-  int score = 0;
   int userInput = 0;
   int robotTurn = 0;
   int turn = 0;
@@ -47,7 +45,8 @@ int main()
   {
   case 1:
     printf("Enter your name: ");
-    scanf("%s", userData[1].name);
+    scanf("%s", userData[0].name);
+    system("clear");
     resetBoard();
     printBoard();
     while (winner == 0)
@@ -67,13 +66,14 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(userInput, 'X');
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
             if (winner == 1)
             {
-              save_data(userData[1].name, 1);
+              save_data(userData[0].name, 1);
             }
             turn++;
             break;
@@ -93,13 +93,14 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(robotTurn, 'O');
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
-            if (winner == 1) 
+            if (winner == 1)
             {
-              save_data(userData[1].name, -1);
+              save_data(userData[0].name, -1);
             }
             turn++;
             break;
@@ -110,13 +111,13 @@ int main()
     break;
   case 2:
     printf("Player 1 enter your name: ");
-    scanf("%s", userData[2].name);
-    userData[2].score = 3;
-    save_data(userData[2].name, userData[2].score);
+    scanf("%s", userData[1].name);
+    userData[1].score = 3;
+    save_data(userData[1].name, userData[1].score);
     printf("Player 2 enter your name: ");
-    userData[3].score = 3;
-    scanf("%s", userData[3].name);
-    save_data(userData[3].name, userData[3].score);
+    userData[2].score = 3;
+    scanf("%s", userData[2].name);
+    save_data(userData[2].name, userData[2].score);
   case 3:
     check_data();
     break;
@@ -297,7 +298,7 @@ int checkWinner(int data)
     }
     else
     {
-     printDefeat();
+      printDefeat();
     }
     return 1;
   }
@@ -351,15 +352,15 @@ void printDefeat()
   printf(" |  _ \\| ____|  ___| ____|  / \\|_   _|\n");
   printf(" | | | |  _| | |_  |  _|   / _ \\ | |  \n");
   printf(" | |_| | |___|  _| | |___ / ___ \\| |  \n");
-  printf(" |____/|_____|_|   |_____/_/   \\_\\_|  \n");     
+  printf(" |____/|_____|_|   |_____/_/   \\_\\_|  \n");
 }
 
 void printTopPlayers()
 {
-      printf("  _____ ___  ____    ____  _        _ __   _______ ____  ____  \n");
-      printf(" |_   _/ _ \\|  _ \\  |  _ \\| |      / \\\\ \\ / / ____|  _ \\/ ___| \n");
-      printf("   | || | | | |_) | | |_) | |     / _ \\\\ V /|  _| | |_) \\___ \\ \n");
-      printf("   | || |_| |  __/  |  __/| |___ / ___ \\\\|| | |___|  _ < ___) | \n");
-      printf("   |_| \\___/|_|     |_|   |_____/_/   \\_\\_| |_____|_| \\_\\____/ \n");
-      printf("\nScores:\n");
+  printf("  _____ ___  ____    ____  _        _ __   _______ ____  ____  \n");
+  printf(" |_   _/ _ \\|  _ \\  |  _ \\| |      / \\\\ \\ / / ____|  _ \\/ ___| \n");
+  printf("   | || | | | |_) | | |_) | |     / _ \\\\ V /|  _| | |_) \\___ \\ \n");
+  printf("   | || |_| |  __/  |  __/| |___ / ___ \\\\|| | |___|  _ < ___) | \n");
+  printf("   |_| \\___/|_|     |_|   |_____/_/   \\_\\_| |_____|_| \\_\\____/ \n");
+  printf("\nScores:\n");
 }
