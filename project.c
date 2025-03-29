@@ -5,21 +5,21 @@
 #include <stdbool.h>
 #define SIZE 3
 
+char board[SIZE][SIZE];
+
 void resetBoard();
+void printBoard();
+void updateBoard(int, char);
 void check_data();                      // check the ranking list
 void save_data(char name[], int score); // save data to a ranking list
 int randomNumGeneration();
 int interWithUserO(); // O turn
 int interWithUserX(); // X turn:
-void printBoard();
-void resetBoard();
-void updateBoard(int, char);
 void printLogo();
 void printVictory();
 void printDefeat();
 void printTopPlayers();
 int checkWinner(int);
-char board[SIZE][SIZE];
 
 struct Name
 {
