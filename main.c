@@ -12,18 +12,18 @@ void printBoard();
 void updateBoard(int, char);
 void check_data();                      // check the ranking list
 void save_data(char name[], int score); // save data to a ranking list
-int randomNumGeneration();
-int interWithUserO(); // O turn
-int interWithUserX(); // X turn:
 void printLogo();
 void printVictory();
 void printDefeat();
 void printTopPlayers();
+int randomNumGeneration();
+int interWithUserO(); // O turn
+int interWithUserX(); // X turn:
 int checkWinner(int);
 
 struct Name
 {
-  char name[15];
+  name[15];
   int score;
 };
 
@@ -97,7 +97,7 @@ int main()
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
-            if (winner == 1) 
+            if (winner == 1)
             {
               save_data(userData[1].name, -1);
             }
@@ -297,7 +297,7 @@ int checkWinner(int data)
     }
     else
     {
-     printDefeat();
+      printDefeat();
     }
     return 1;
   }
@@ -351,15 +351,15 @@ void printDefeat()
   printf(" |  _ \\| ____|  ___| ____|  / \\|_   _|\n");
   printf(" | | | |  _| | |_  |  _|   / _ \\ | |  \n");
   printf(" | |_| | |___|  _| | |___ / ___ \\| |  \n");
-  printf(" |____/|_____|_|   |_____/_/   \\_\\_|  \n");     
+  printf(" |____/|_____|_|   |_____/_/   \\_\\_|  \n");
 }
 
 void printTopPlayers()
 {
-      printf("  _____ ___  ____    ____  _        _ __   _______ ____  ____  \n");
-      printf(" |_   _/ _ \\|  _ \\  |  _ \\| |      / \\\\ \\ / / ____|  _ \\/ ___| \n");
-      printf("   | || | | | |_) | | |_) | |     / _ \\\\ V /|  _| | |_) \\___ \\ \n");
-      printf("   | || |_| |  __/  |  __/| |___ / ___ \\\\|| | |___|  _ < ___) | \n");
-      printf("   |_| \\___/|_|     |_|   |_____/_/   \\_\\_| |_____|_| \\_\\____/ \n");
-      printf("\nScores:\n");
+  printf("  _____ ___  ____    ____  _        _ __   _______ ____  ____  \n");
+  printf(" |_   _/ _ \\|  _ \\  |  _ \\| |      / \\\\ \\ / / ____|  _ \\/ ___| \n");
+  printf("   | || | | | |_) | | |_) | |     / _ \\\\ V /|  _| | |_) \\___ \\ \n");
+  printf("   | || |_| |  __/  |  __/| |___ / ___ \\\\|| | |___|  _ < ___) | \n");
+  printf("   |_| \\___/|_|     |_|   |_____/_/   \\_\\_| |_____|_| \\_\\____/ \n");
+  printf("\nScores:\n");
 }
