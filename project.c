@@ -17,9 +17,9 @@ void updateBoard(int, char);
 void printLogo();
 void printVictory();
 void printDefeat();
+void printTopPlayers();
 int checkWinner(int);
 char board[SIZE][SIZE];
-bool gameOver = false;
 
 struct Name
 {
@@ -34,9 +34,7 @@ int main()
   int score = 0;
   int userInput = 0;
   int robotTurn = 0;
-  int counter = 0;
   int turn = 0;
-  int *ptrTurn = &turn;
 
   printLogo();
 
@@ -73,6 +71,10 @@ int main()
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
+            if (winner == 1)
+            {
+              save_data(userData[1].name, 1);
+            }
             turn++;
             break;
           }
@@ -95,14 +97,16 @@ int main()
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
+            if (winner == 1) 
+            {
+              save_data(userData[1].name, -1);
+            }
             turn++;
             break;
           }
         }
       }
     }
-    userData[1].score = 4;
-    save_data(userData[1].name, userData[1].score);
     break;
   case 2:
     printf("Player 1 enter your name: ");
@@ -147,6 +151,7 @@ int interWithUserX()
 
 void check_data()
 {
+  printTopPlayers();
   FILE *file = fopen("game_data.txt", "r");
   char ch;
   while ((ch = fgetc(file)) != EOF)
@@ -254,7 +259,6 @@ int checkWinner(int data)
   {
     if (board[row][0] == board[row][1] && board[row][1] == board[row][2])
     {
-      gameOver = true;
       if (data % 2 == 0)
       {
         printVictory();
@@ -272,7 +276,6 @@ int checkWinner(int data)
   {
     if (board[0][col] == board[1][col] && board[1][col] == board[2][col])
     {
-      gameOver = true;
       if (data % 2 == 0)
       {
         printVictory();
@@ -288,7 +291,6 @@ int checkWinner(int data)
   // check diagonals
   if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
   {
-    gameOver = true;
     if (data % 2 == 0)
     {
       printVictory();
@@ -301,7 +303,6 @@ int checkWinner(int data)
   }
   if (board[2][0] == board[1][1] && board[1][1] == board[0][2])
   {
-    gameOver = true;
     if (data % 2 == 0)
     {
       printVictory();
@@ -351,4 +352,14 @@ void printDefeat()
   printf(" | | | |  _| | |_  |  _|   / _ \\ | |  \n");
   printf(" | |_| | |___|  _| | |___ / ___ \\| |  \n");
   printf(" |____/|_____|_|   |_____/_/   \\_\\_|  \n");     
+}
+
+void printTopPlayers()
+{
+      printf("  _____ ___  ____    ____  _        _ __   _______ ____  ____  \n");
+      printf(" |_   _/ _ \\|  _ \\  |  _ \\| |      / \\\\ \\ / / ____|  _ \\/ ___| \n");
+      printf("   | || | | | |_) | | |_) | |     / _ \\\\ V /|  _| | |_) \\___ \\ \n");
+      printf("   | || |_| |  __/  |  __/| |___ / ___ \\\\|| | |___|  _ < ___) | \n");
+      printf("   |_| \\___/|_|     |_|   |_____/_/   \\_\\_| |_____|_| \\_\\____/ \n");
+      printf("\nScores:\n");
 }
