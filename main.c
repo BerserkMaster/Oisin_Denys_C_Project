@@ -17,22 +17,23 @@ void printVictory();
 void printDefeat();
 void printTopPlayers();
 int randomNumGeneration();
-int interWithUserO(); // O turn
-int interWithUserX(); // X turn:
+int interWithUserO(const char* user); // O turn
+int interWithUserX(const char* user); // X turn:
 int checkWinner(int);
 
 struct Name
 {
-  name[15];
+  char name[15];
   int score;
 };
 
 int main()
 {
   int winner = 0;
-  struct Name userData[3];
+  struct Name userData[4];
   int score = 0;
   int userInput = 0;
+  int user2Input = 0;
   int robotTurn = 0;
   int turn = 0;
 
@@ -57,7 +58,7 @@ int main()
       {
         while (winner == 0)
         {
-          userInput = interWithUserX();
+          userInput = interWithUserX(userData[1].name);
           int row = (userInput - 1) / SIZE;
           int col = (userInput - 1) % SIZE;
           if (board[row][col] == 'X' || board[row][col] == 'O')
@@ -111,12 +112,77 @@ int main()
   case 2:
     printf("Player 1 enter your name: ");
     scanf("%s", userData[2].name);
-    userData[2].score = 3;
     save_data(userData[2].name, userData[2].score);
     printf("Player 2 enter your name: ");
-    userData[3].score = 3;
     scanf("%s", userData[3].name);
     save_data(userData[3].name, userData[3].score);
+    resetBoard();
+    printBoard();
+
+    while (winner == 0)
+    {
+      printf("\n");
+      if (turn % 2 == 0)
+      {
+        while (winner == 0)
+        {
+          userInput = interWithUserX(userData[2].name);
+          int row = (userInput - 1) / SIZE;
+          int col = (userInput - 1) % SIZE;
+          if (board[row][col] == 'X' || board[row][col] == 'O')
+          {
+            printf("The cell %d is occupied\n", userInput);
+            continue;
+          }
+          else
+          {
+            updateBoard(userInput, 'X');
+            printBoard();
+            puts("\n");
+            winner = checkWinner(turn);
+            if (winner == 1)
+            {
+              save_data(userData[2].name, 1);
+              save_data(userData[3].name, -1);
+            }
+            turn++;
+            break;
+          }
+        }
+      }
+      else
+      {
+        while (winner == 0)
+        {
+          user2Input = interWithUserO(userData[3].name);
+          int row = (user2Input - 1) / SIZE;
+          int col = (user2Input - 1) % SIZE;
+          if (board[row][col] == 'X' || board[row][col] == 'O')
+          {
+            printf("The cell %d is occupied\n", user2Input);
+            continue;
+          }
+          else
+          {
+            updateBoard(user2Input, 'O');
+            printBoard();
+            puts("\n");
+            winner = checkWinner(turn);
+            if (winner == 1)
+            {
+              save_data(userData[3].name, 1);
+              save_data(userData[2].name, -1);
+            }
+            turn++;
+            break;
+          }
+        }
+      }
+    }
+    break;
+
+
+
   case 3:
     check_data();
     break;
@@ -133,21 +199,20 @@ int randomNumGeneration()
   return randNum;
 }
 
-int interWithUserO()
-{
-  int input = 0;
-  printf("Please enter a digit of cell to draw O: ");
-  scanf("%d", &input);
-  return input;
+int interWithUserX(const char* user) {
+    int choice = 0;
+    printf("%s, please enter a digit of cell to draw X: ", user);
+    scanf("%d", &choice);
+    return choice;
 }
 
-int interWithUserX()
-{
-  int choice = 0;
-  printf("Please enter a digit of cell to draw X: ");
-  scanf("%d", &choice);
-  return choice;
+int interWithUserO(const char* user) {
+    int input = 0;
+    printf("%s, please enter a digit of cell to draw O: ", user);
+    scanf("%d", &input);
+    return input;
 }
+
 
 void check_data()
 {
