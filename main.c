@@ -3,6 +3,7 @@
 #include <time.h> //for random generation
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h> // for usleep
 #define SIZE 3
 
 char board[SIZE][SIZE];
@@ -201,16 +202,40 @@ int randomNumGeneration()
 
 int interWithUserX(const char* user) {
     int choice = 0;
-    printf("%s, please enter a digit of cell to draw X: ", user);
-    scanf("%d", &choice);
+    int result;
+
+    do {
+        printf("%s, please enter a digit of cell to draw X (1-9): ", user);
+        result = scanf("%d", &choice);
+
+        while (getchar() != '\n'); // use this to flush the line
+
+        if (result != 1 || choice < 1 || choice > 9) {
+            printf("Invalid input. Must be a number between 1 and 9.\n");
+        }
+
+    } while (result != 1 || choice < 1 || choice > 9);
+
     return choice;
 }
 
 int interWithUserO(const char* user) {
-    int input = 0;
-    printf("%s, please enter a digit of cell to draw O: ", user);
-    scanf("%d", &input);
-    return input;
+    int choice = 0;
+    int result;
+
+    do {
+        printf("%s, please enter a digit of cell to draw O (1-9): ", user);
+        result = scanf("%d", &choice);
+
+        while (getchar() != '\n');
+
+        if (result != 1 || choice < 1 || choice > 9) {
+            printf("Invalid input. Must be a number between 1 and 9.\n");
+        }
+
+    } while (result != 1 || choice < 1 || choice > 9);
+
+    return choice;
 }
 
 
@@ -403,11 +428,18 @@ void printLogo()
 
 void printVictory()
 {
-  printf(" __     _____ ____ _____ ___  ______   __\n");
-  printf(" \\ \\   / /_ _/ ___|_   _/ _ \\|  _ \\ \\ / /\n");
-  printf("  \\ \\ / / | | |     | || | | | |_) \\ V / \n");
-  printf("   \\ V /  | | |___  | || |_| |  _ < | |  \n");
-  printf("    \\_/  |___\\____| |_| \\___/|_| \\_\\|_|  \n");
+  const char* lines[] = {
+        " __     _____ ____ _____ ___  ______   __",
+        " \\ \\   / /_ _/ ___|_   _/ _ \\|  _ \\ \\ / /",
+        "  \\ \\ / / | | |     | || | | | |_) \\ V / ",
+        "   \\ V /  | | |___  | || |_| |  _ < | |  ",
+        "    \\_/  |___\\____| |_| \\___/|_| \\_\\|_|  ",
+    };
+
+    for (int i = 0; i < 5; i++) {
+        printf("%s\n", lines[i]); // prints out lines in array
+        usleep(1000000); // Speed it prints at
+    }
 }
 
 void printDefeat()
