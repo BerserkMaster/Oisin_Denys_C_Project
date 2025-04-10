@@ -18,13 +18,12 @@ void printVictory(char name[]);
 void printDefeat();
 void printDraw();
 void printTopPlayers();
-void printResult(bool singlePlayer, int turn, char name[]);
+void printResult(bool singlePlayer, int turn, char name[], int);
 void togglePlayer(char *currentPlayer);
 int randomNumGeneration(int range);
 int interWithUserO(const char* user); // O turn
 int interWithUserX(const char* user); // X turn:
 int checkWinner(int data);
-
 
 
 struct Name
@@ -58,6 +57,7 @@ int main()
     singlePlayer= true;
     printf("Enter your name: ");
     scanf("%s", userData[1].name);
+    system("clear");
     resetBoard();
     printBoard();
     while (winner == 0)
@@ -77,15 +77,17 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(userInput, 'X');
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
             if (winner == 1)
             {
-              printResult(singlePlayer, turn,userData[1].name);
+              printResult(singlePlayer, turn,userData[1].name, winner);
               save_data(userData[1].name, 1);
             }
+            togglePlayer(&currentPlayer);
             turn++;
             break;
           }
@@ -104,15 +106,17 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(robotTurn, 'O');
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
             if (winner == 1)
             {
-              printResult(singlePlayer, turn, userData[1].name);
+              printResult(singlePlayer, turn, userData[1].name, winner);
               save_data(userData[1].name, -1);
             }
+            togglePlayer(&currentPlayer);
             turn++;
             break;
           }
@@ -121,19 +125,13 @@ int main()
     }
     break;
 
-
-
-
-
-
   case 2:
     singlePlayer = false;
     printf("Player 1 enter your name: ");
     scanf("%s", userData[2].name);
-    save_data(userData[2].name, userData[2].score);
     printf("Player 2 enter your name: ");
     scanf("%s", userData[3].name);
-    save_data(userData[3].name, userData[3].score);
+    system("clear");
     resetBoard();
     printBoard();
 
@@ -154,6 +152,7 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(userInput, 'X');
             printBoard();
             puts("\n");
@@ -161,7 +160,7 @@ int main()
             winner = checkWinner(turn);
             if (winner == 1)
             {
-              printResult(singlePlayer, turn, userData[2].name);
+              printResult(singlePlayer, turn, userData[2].name, winner);
               save_data(userData[2].name, 1);
               save_data(userData[3].name, -1);
               }
@@ -185,13 +184,14 @@ int main()
           }
           else
           {
+            system("clear");
             updateBoard(user2Input, 'O');
             printBoard();
             puts("\n");
             winner = checkWinner(turn);
             if (winner == 1)
             {
-              printResult(singlePlayer, turn, userData[3].name);
+              printResult(singlePlayer, turn, userData[3].name, winner);
               save_data(userData[3].name, 1);
               save_data(userData[2].name, -1);
             }
@@ -203,14 +203,6 @@ int main()
       }
     }
     break;
-
-
-
-
-
-
-
-
 
   case 3:
     check_data();
@@ -265,7 +257,6 @@ int interWithUserO(const char* user) {
 
     return choice;
 }
-
 
 void check_data()
 {
@@ -402,7 +393,7 @@ int checkWinner(int data)
   }
   // check draw
   if(data==8){
-    return 1;
+    return 2;
   }
   return 0;
 }
@@ -411,7 +402,7 @@ void togglePlayer(char *player) {
   *player = (*player == 'X') ? 'O' : 'X';
 }
 
-void printResult(bool singlePlayer, int turn, char name[]){
+void printResult(bool singlePlayer, int turn, char name[], int winner){
   if(singlePlayer){
     if (turn % 2 == 0)
     {
@@ -423,9 +414,13 @@ void printResult(bool singlePlayer, int turn, char name[]){
     }
   }
   else{
-    if(turn!=8){
+    if(turn !=8){
       printVictory(name);
-    } else{
+    } else if(turn == 8 && winner == 1)
+    {
+      printVictory(name);
+    } else
+    {
       printDraw();
     }
   }
